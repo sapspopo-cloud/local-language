@@ -138,21 +138,34 @@
       flex-wrap: wrap;
     }
     .pouch-item-pill {
-      background: #fff8e1;
-      border: 1px solid #ffe082;
-      padding: 2px 10px;
-      border-radius: 12px;
+      padding: 3px 10px;
+      border-radius: 14px;
       font-size: 0.78rem;
-      color: #6d4c41;
-      font-weight: bold;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      animation: popPouch 0.3s ease;
+      transition: all 0.25s ease;
+    }
+    .pouch-item-pill.locked {
+      background: #ebebeb;
+      border: 1px dashed #bbb;
+      color: #888;
+      opacity: 0.52;
+      filter: grayscale(80%);
+    }
+    .pouch-item-pill.lit {
+      background: #fff8e1;
+      border: 1.5px solid #ffd54f;
+      color: #6d4c41;
+      font-weight: bold;
+      opacity: 1;
+      filter: none;
+      box-shadow: 0 2px 6px rgba(212, 154, 55, 0.25);
+      animation: popPouch 0.4s ease;
     }
     @keyframes popPouch {
-      0% { transform: scale(0.5); }
-      70% { transform: scale(1.15); }
+      0% { transform: scale(0.6); }
+      70% { transform: scale(1.12); }
       100% { transform: scale(1); }
     }
 
@@ -505,67 +518,6 @@
       box-shadow: 0 2px 8px rgba(184,64,40,0.3);
     }
     .btn-dialogue-close:hover { background: var(--c-brick-dark); }
-
-    /* 虛擬手把 */
-    .mobile-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      background: #fff;
-      border: 1px solid #dfd6c8;
-      border-radius: var(--radius);
-      padding: 10px 16px;
-      box-shadow: var(--shadow);
-    }
-    .d-pad {
-      display: grid;
-      grid-template-columns: repeat(3, 44px);
-      grid-template-rows: repeat(3, 40px);
-      gap: 4px;
-      justify-items: center;
-      align-items: center;
-    }
-    .d-btn {
-      width: 44px;
-      height: 40px;
-      background: #f0ebe1;
-      border: 1.5px solid #d4c5b3;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #4a5568;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      touch-action: manipulation;
-    }
-    .d-btn:active {
-      background: var(--c-brick);
-      color: #fff;
-      transform: scale(0.95);
-    }
-    .btn-action-interact {
-      background: var(--c-brick);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 28px;
-      font-size: 0.95rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(184, 64, 40, 0.35);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      touch-action: manipulation;
-    }
-    .btn-action-interact:active {
-      transform: scale(0.96);
-      background: var(--c-brick-dark);
-    }
 
     /* 底部三大文化手冊典藏區 */
     .archive-section {
@@ -922,22 +874,6 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- 行動裝置虛擬鍵盤與互動鈕 -->
-  <div class="mobile-controls">
-    <div class="d-pad">
-      <div></div>
-      <button class="d-btn" id="dUp">▲</button>
-      <div></div>
-      <button class="d-btn" id="dLeft">◄</button>
-      <button class="d-btn" id="dDown">▼</button>
-      <button class="d-btn" id="dRight">►</button>
-      <div></div><div></div><div></div>
-    </div>
-    <button class="btn-action-interact" id="btnInteract">
-      💬 靠近對話 (空白鍵)
-    </button>
   </div>
 
   <!-- 底部三大典藏手冊 -->
@@ -2540,22 +2476,6 @@
 
     player.targetX = clickX;
     player.targetY = clickY;
-  });
-
-  const bindDPad = (btnId, key) => {
-    const el = $(btnId);
-    const setKey = val => { keys[key] = val; player.targetX = null; };
-    el.addEventListener('pointerdown', e => { e.preventDefault(); setKey(true); });
-    el.addEventListener('pointerup', e => { e.preventDefault(); setKey(false); });
-    el.addEventListener('pointerleave', () => setKey(false));
-  };
-  bindDPad('dUp', 'up');
-  bindDPad('dDown', 'down');
-  bindDPad('dLeft', 'left');
-  bindDPad('dRight', 'right');
-
-  $('btnInteract').addEventListener('click', () => {
-    if (nearEntity) openDialogue(nearEntity, nearType);
   });
 
   $('btnHint').addEventListener('click', giveHint);
