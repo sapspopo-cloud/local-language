@@ -1,0 +1,2641 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>風中天使：金門聖誕老阿伯——羅寶田神父傳奇 RPG</title>
+  <style>
+    :root {
+      --c-brick: #b84028;
+      --c-brick-dark: #8c2815;
+      --c-gold: #d49a37;
+      --c-gold-light: #fef5e7;
+      --c-stone: #4a5568;
+      --c-bg: #f4efe6;
+      --c-card: #ffffff;
+      --c-text: #2d3748;
+      --c-sea: #1f5f7a;
+      --c-green: #2e7d32;
+      --radius: 12px;
+      --shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      line-height: 1.5;
+      padding: 12px;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    /* 頂部歷史標題列 */
+    header.hero-banner {
+      background: linear-gradient(135deg, var(--c-brick-dark) 0%, var(--c-brick) 60%, var(--c-gold) 100%);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .hero-title h1 {
+      font-size: 1.35rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-title p {
+      font-size: 0.85rem;
+      opacity: 0.92;
+      margin-top: 2px;
+    }
+    .top-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .badge-status {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 0.82rem;
+      color: #fff;
+      font-weight: bold;
+    }
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .btn-reset:hover { background: rgba(255, 255, 255, 0.35); }
+
+    /* 頂部文本閱讀按鈕 */
+    .btn-read-text {
+      background: #d49a37;
+      border: 1px solid #ffe082;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: bold;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .btn-read-text:hover {
+      background: #b87d20;
+      transform: translateY(-1px);
+    }
+
+    /* 小動物獎勵收納錦囊橫條 */
+    .animal-pouch-bar {
+      background: #fff;
+      border: 1.5px solid #ffd54f;
+      border-radius: 20px;
+      padding: 6px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(212, 154, 55, 0.15);
+    }
+    .pouch-title {
+      font-size: 0.84rem;
+      font-weight: bold;
+      color: #b26a00;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pouch-items {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .pouch-item-pill {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      color: #6d4c41;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      animation: popPouch 0.3s ease;
+    }
+    @keyframes popPouch {
+      0% { transform: scale(0.5); }
+      70% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* 關卡角色歷程看板 */
+    .stage-hub-section {
+      background: #fff;
+      border: 1px solid #dfd6c8;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .stage-hub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    .stage-hub-title {
+      font-size: 0.92rem;
+      font-weight: bold;
+      color: var(--c-stone);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stage-hub-hint {
+      font-size: 0.78rem;
+      color: var(--c-brick);
+      background: var(--c-gold-light);
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .character-stage-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    @media (max-width: 820px) {
+      .character-stage-grid {
+        grid-template-columns: repeat(7, minmax(115px, 1fr));
+      }
+    }
+
+    .char-stage-card {
+      background: #faf7f2;
+      border: 2px solid #e2d7c7;
+      border-radius: 10px;
+      padding: 6px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .char-stage-card.locked {
+      background: #e9ecef;
+      border-color: #ced4da;
+      filter: grayscale(100%);
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+    .char-stage-card.completed {
+      background: #f1f8e9;
+      border-color: #81c784;
+      opacity: 1;
+      filter: none;
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+    }
+    .char-stage-card.active {
+      background: #fff5eb;
+      border-color: var(--c-brick);
+      opacity: 1;
+      filter: none;
+      transform: translateY(-2px);
+      box-shadow: 0 0 14px rgba(184, 64, 40, 0.4);
+      animation: pulseBorder 2s infinite;
+    }
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 0 10px rgba(184, 64, 40, 0.35); }
+      50% { box-shadow: 0 0 18px rgba(184, 64, 40, 0.65); border-color: #e65100; }
+    }
+    .char-stage-card.just-unlocked {
+      animation: lightUpBurst 1.2s ease-out forwards;
+    }
+    @keyframes lightUpBurst {
+      0% { transform: scale(0.9); filter: brightness(2) drop-shadow(0 0 20px #ffd54f); border-color: #ffd54f; }
+      50% { transform: scale(1.08); filter: brightness(1.4); }
+      100% { transform: scale(1); filter: none; }
+    }
+
+    .char-code-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #fff;
+      background: #8d99ae;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+    .char-stage-card.active .char-code-badge { background: var(--c-brick); }
+    .char-stage-card.completed .char-code-badge { background: var(--c-green); }
+
+    .char-avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .char-stage-card.active .char-avatar-circle {
+      border-color: var(--c-brick);
+      background: var(--c-gold-light);
+    }
+    .char-stage-card.completed .char-avatar-circle {
+      border-color: #81c784;
+      background: #e8f5e9;
+    }
+
+    .char-name-label {
+      font-size: 0.78rem;
+      font-weight: bold;
+      color: var(--c-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .char-status-text {
+      font-size: 0.65rem;
+      color: var(--c-stone);
+      font-weight: 600;
+    }
+    .char-stage-card.completed .char-status-text { color: var(--c-green); }
+    .char-stage-card.active .char-status-text { color: var(--c-brick); }
+
+    /* 遊戲全景實景畫布區 */
+    .game-viewport-card {
+      background: #2b2d42;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #d4c5b3;
+    }
+
+    #rpgCanvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9.2;
+      background: #7ca970;
+      cursor: crosshair;
+    }
+
+    /* 操作提示浮條 */
+    .controls-hint-bar {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    .controls-hint-bar span {
+      background: #fff;
+      color: #222;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.7rem;
+    }
+
+    /* 當前目標導航橫幅 */
+    .mission-floating-banner {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: rgba(184, 64, 40, 0.92);
+      color: #fff;
+      padding: 5px 14px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      animation: bannerGlow 2.5s infinite;
+    }
+    @keyframes bannerGlow {
+      0%, 100% { opacity: 0.92; }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* RPG 角色交談對話框 */
+    .dialogue-modal {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.97);
+      border: 2px solid var(--c-gold);
+      border-radius: 10px;
+      padding: 14px 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 10;
+      animation: popIn 0.2s ease-out;
+    }
+    @keyframes popIn {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .dialogue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ebd9c7;
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+    .dialogue-speaker {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--c-brick-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dialogue-topic-tag {
+      font-size: 0.75rem;
+      background: var(--c-gold-light);
+      color: var(--c-brick);
+      border: 1px solid #f3d4a0;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+    .dialogue-body {
+      font-size: 0.95rem;
+      color: #2d3748;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .dialogue-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .dialogue-opt-btn {
+      text-align: left;
+      background: #fff;
+      border: 1.5px solid #d4c5b3;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #333;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dialogue-opt-btn:hover {
+      background: var(--c-gold-light);
+      border-color: var(--c-brick);
+      transform: translateX(4px);
+    }
+    .dialogue-opt-btn.correct {
+      background: #e8f5e9;
+      border-color: #2e7d32;
+      color: #1b5e20;
+      font-weight: bold;
+    }
+    .dialogue-opt-btn.wrong {
+      background: #ffebee;
+      border-color: #c62828;
+      color: #b71c1c;
+      opacity: 0.6;
+    }
+    .opt-key {
+      background: #e2d9cc;
+      color: #444;
+      font-weight: bold;
+      font-size: 0.75rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dialogue-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #ebd9c7;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-dialogue-hint {
+      background: #fff8e1;
+      border: 1px solid #ffd54f;
+      color: #8d6e63;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .dialogue-hint-text {
+      font-size: 0.82rem;
+      color: #d84315;
+      font-weight: 500;
+    }
+    .btn-dialogue-close {
+      background: var(--c-brick);
+      color: #fff;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(184,64,40,0.3);
+    }
+    .btn-dialogue-close:hover { background: var(--c-brick-dark); }
+
+    /* 虛擬手把 */
+    .mobile-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      background: #fff;
+      border: 1px solid #dfd6c8;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      box-shadow: var(--shadow);
+    }
+    .d-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 44px);
+      grid-template-rows: repeat(3, 40px);
+      gap: 4px;
+      justify-items: center;
+      align-items: center;
+    }
+    .d-btn {
+      width: 44px;
+      height: 40px;
+      background: #f0ebe1;
+      border: 1.5px solid #d4c5b3;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #4a5568;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    .d-btn:active {
+      background: var(--c-brick);
+      color: #fff;
+      transform: scale(0.95);
+    }
+    .btn-action-interact {
+      background: var(--c-brick);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 28px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(184, 64, 40, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+    .btn-action-interact:active {
+      transform: scale(0.96);
+      background: var(--c-brick-dark);
+    }
+
+    /* 底部三大文化手冊典藏區 */
+    .archive-section {
+      margin-top: 16px;
+      background: var(--c-card);
+      border: 1px solid #dfd6c8;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .tab-bar {
+      display: flex;
+      border-bottom: 2px solid #ebd9c7;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.88rem;
+      font-weight: bold;
+      color: var(--c-stone);
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      position: relative;
+    }
+    .tab-btn.active {
+      color: var(--c-brick);
+      background: var(--c-gold-light);
+    }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 3px;
+      background: var(--c-brick);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .poem-scroll {
+      background: #fffdf9;
+      border: 1px solid #ebdccb;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+    .poem-row {
+      padding: 4px 0;
+      border-bottom: 1px dashed #f0e6d6;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .poem-row.locked { opacity: 0.38; }
+
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+    .vocab-card {
+      background: #fffdfb;
+      border: 1px solid #ebd9c7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      position: relative;
+    }
+    .vocab-card.learned {
+      border-color: #ffd54f;
+      background: #fffdf4;
+    }
+    .vocab-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+      margin-bottom: 5px;
+    }
+    .vocab-term { font-size: 1.05rem; font-weight: bold; color: var(--c-brick-dark); }
+    .vocab-tl { font-size: 0.8rem; color: var(--c-sea); }
+
+    .pattern-card {
+      background: #f8fafc;
+      border-left: 4px solid var(--c-sea);
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 999;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      padding: 24px;
+      border: 4px solid var(--c-gold);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .modal-box h2 { color: var(--c-brick); font-size: 1.4rem; margin-bottom: 8px; }
+
+    /* 開局引導選擇卡 (Welcome Choices) */
+    .welcome-choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0 10px;
+    }
+    @media (max-width: 580px) {
+      .welcome-choices { grid-template-columns: 1fr; }
+    }
+    .welcome-card {
+      background: #faf7f2;
+      border: 2px solid #dfd6c8;
+      border-radius: 12px;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .welcome-card:hover {
+      border-color: var(--c-brick);
+      background: #fff5eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184, 64, 40, 0.18);
+    }
+    .welcome-card-icon {
+      font-size: 2.2rem;
+    }
+    .welcome-card-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: var(--c-brick-dark);
+    }
+    .welcome-card-desc {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .welcome-card-btn {
+      margin-top: 6px;
+      background: var(--c-brick);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(184, 64, 40, 0.3);
+      width: 100%;
+    }
+    .welcome-card-btn.alt {
+      background: var(--c-sea);
+      box-shadow: 0 2px 6px rgba(31, 95, 122, 0.3);
+    }
+
+    /* 文本閱讀視窗 (Reader Modal Box) */
+    .reader-modal-box {
+      background: #fffdf9;
+      border-radius: 16px;
+      max-width: 760px;
+      width: 100%;
+      padding: 24px;
+      border: 4px solid var(--c-gold);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ebd9c7;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+    .reader-title {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: var(--c-brick-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .reader-body {
+      overflow-y: auto;
+      padding-right: 8px;
+      line-height: 1.85;
+      color: #2d3748;
+      scrollbar-width: thin;
+    }
+    .reader-section {
+      background: #fff;
+      border: 1px solid #ebd9c7;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .reader-sec-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--c-brick);
+      border-bottom: 1.5px dashed #f0e0ce;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reader-poem-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 0;
+      border-bottom: 1px dashed #f5efe6;
+      flex-wrap: wrap;
+    }
+    .reader-poem-han {
+      font-size: 1.02rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .reader-poem-tl {
+      font-size: 0.88rem;
+      color: #776e65;
+      font-family: Georgia, serif;
+    }
+    .reader-vocab-item {
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #eee;
+    }
+    .reader-vocab-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .reader-vocab-term {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--c-brick-dark);
+    }
+    .reader-vocab-tl {
+      font-size: 0.88rem;
+      color: var(--c-sea);
+      font-weight: bold;
+    }
+    .reader-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px solid #ebd9c7;
+      padding-top: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 頂部歷史標題列 -->
+  <header class="hero-banner">
+    <div class="hero-title">
+      <h1>🕊️ 風中天使：金門聖誕老阿伯</h1>
+      <p>金門歷史聚落全景漫步 · 羅寶田神父傳奇（全角色漫步 ✕ 可愛小動物語詞互動 RPG）</p>
+    </div>
+    <div class="top-controls">
+      <button class="btn-read-text" id="btnOpenReaderTop">📖 文本閱讀</button>
+      <span class="badge-status" id="statBadge">當前目標：CHAR-01 阿土伯</span>
+      <span class="badge-status" id="loveBadge" style="background:#b84028;">大愛值 100 ❤️</span>
+      <button class="btn-reset" id="btnReset">🔄 重置進度</button>
+    </div>
+  </header>
+
+  <!-- 小動物犒勞獎勵行囊 (Animal Reward Pouch) -->
+  <div class="animal-pouch-bar">
+    <div class="pouch-title">
+      <span>🎒 小動物感謝行囊（向小動物解說語詞獲得）：</span>
+    </div>
+    <div class="pouch-items" id="pouchItems">
+      <span style="font-size:0.78rem; color:#888;">尚未收到小動物點心，快去尋找地圖上的小動物吧！</span>
+    </div>
+  </div>
+
+  <!-- 頂部：關卡角色歷程看板 -->
+  <section class="stage-hub-section">
+    <div class="stage-hub-header">
+      <span class="stage-hub-title">🗺️ 關卡歷史角色代碼簿</span>
+      <span class="stage-hub-hint" id="hubHint">✨ 請在地圖上尋找散步的角色開啟歷史任務！</span>
+    </div>
+    <div class="character-stage-grid" id="charStageGrid"></div>
+  </section>
+
+  <!-- 主要互動舞台遊戲視窗 (Canvas 全景大公園 + 對話系統) -->
+  <div class="game-viewport-card">
+
+    <canvas id="rpgCanvas" width="880" height="500"></canvas>
+
+    <!-- 操作提示 -->
+    <div class="controls-hint-bar">
+      <span>W A S D</span> / <span>方向鍵</span> / <span>點擊地面</span> 移動，靠近角色 <span>點擊</span> 或按 <span>空白鍵</span> 互動
+    </div>
+
+    <!-- 當前目標導航提示 -->
+    <div class="mission-floating-banner" id="missionBanner">
+      🎯 任務：前往左下方料羅灣碼頭，尋找正在散步的 [CHAR-01 阿土伯] 對話！
+    </div>
+
+    <!-- 第三人稱 RPG 對話框 -->
+    <div class="dialogue-modal" id="dialogueModal">
+      <div class="dialogue-header">
+        <div class="dialogue-speaker" id="dialogueSpeaker">💬 [CHAR-01] 碼頭老伯阿土</div>
+        <span class="dialogue-topic-tag" id="dialogueTopicTag">核心語詞：結緣</span>
+      </div>
+      <div class="dialogue-body" id="dialogueBody"></div>
+
+      <!-- 母語情境選項 -->
+      <div class="dialogue-options" id="dialogueOptions"></div>
+
+      <!-- 錦囊與操作 -->
+      <div class="dialogue-footer">
+        <div>
+          <button class="btn-dialogue-hint" id="btnHint">💡 時光錦囊提示 (第 1 階)</button>
+          <span class="dialogue-hint-text" id="dialogueHintText"></span>
+        </div>
+        <button class="btn-dialogue-close" id="btnCloseDialogue" style="display:none;">好的，繼續前行 ➔</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 行動裝置虛擬鍵盤與互動鈕 -->
+  <div class="mobile-controls">
+    <div class="d-pad">
+      <div></div>
+      <button class="d-btn" id="dUp">▲</button>
+      <div></div>
+      <button class="d-btn" id="dLeft">◄</button>
+      <button class="d-btn" id="dDown">▼</button>
+      <button class="d-btn" id="dRight">►</button>
+      <div></div><div></div><div></div>
+    </div>
+    <button class="btn-action-interact" id="btnInteract">
+      💬 靠近對話 (空白鍵)
+    </button>
+  </div>
+
+  <!-- 底部三大典藏手冊 -->
+  <section class="archive-section">
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="tab-poem">📜 四十載傳奇歌詩篇章</button>
+      <button class="tab-btn" data-tab="tab-vocab">📖 八大核心語詞手冊</button>
+      <button class="tab-btn" data-tab="tab-patterns">✍️ 三大生活句型筆記</button>
+    </div>
+
+    <div class="tab-content active" id="tab-poem">
+      <div class="poem-scroll" id="poemContainer"></div>
+    </div>
+
+    <div class="tab-content" id="tab-vocab">
+      <div class="vocab-grid" id="vocabContainer"></div>
+    </div>
+
+    <div class="tab-content" id="tab-patterns">
+      <div id="patternsContainer"></div>
+    </div>
+  </section>
+
+  <!-- 全破慶典彈窗 -->
+  <div class="modal-overlay" id="endModal">
+    <div class="modal-box">
+      <h2>🎉 功德圓滿 · 大愛傳世</h2>
+      <p style="margin: 8px 0; color: #4a5568;">您已伴隨羅寶田神父走遍金門，七大歷史角色與八大動物語詞全數圓滿！</p>
+      <div style="background: #fff8e7; padding: 12px; border-radius: 10px; margin: 10px 0; text-align: left; font-size: 0.92rem; line-height: 1.8;">
+        💖 羅寶田神父用他一生的青春、醫療和大愛，深深奉獻在金門，成為大家口中那位溫暖的「聖誕老阿伯」。<br>
+        💖 我們也學會了用最溫馨、動聽的母語，來講生活的酸甜苦辣，分享彼此心中的感恩與歡笑。<br>
+        ✨ 祝願各位現場的每個人：身體健康，日日歡喜，快樂的年齡，越學越快樂！
+      </div>
+      <button class="btn-dialogue-close" id="btnCloseModal" style="display:inline-block; margin-top:6px;">珍藏記憶，重溫篇章</button>
+    </div>
+  </div>
+
+  <!-- 開局引導選擇視窗 (文本閱讀 vs 直接進入闖關) -->
+  <div class="modal-overlay" id="welcomeModal" style="display: flex;">
+    <div class="modal-box" style="max-width: 580px;">
+      <h2>🕊️ 風中天使：金門聖誕老阿伯</h2>
+      <p style="color: #666; font-size: 0.92rem; margin-bottom: 6px;">
+        羅寶田神父傳奇 ✕ 金門閩南語文沉浸式探索 RPG
+      </p>
+      <p style="color: #444; font-size: 0.95rem; line-height: 1.6;">
+        歡迎來到金門歷史聚落！在踏上這段四十載奉獻旅程之前，您可以先研讀本課教學文本，或直接進入島嶼開始探索闖關：
+      </p>
+
+      <div class="welcome-choices">
+        <div class="welcome-card" id="cardWelcomeRead">
+          <div class="welcome-card-icon">📖</div>
+          <div class="welcome-card-title">文本閱讀</div>
+          <div class="welcome-card-desc">先研讀完整詩篇、台羅音標、8 大核心語詞與 3 大句型練習</div>
+          <button class="welcome-card-btn" id="btnWelcomeRead">📖 先閱讀文本</button>
+        </div>
+
+        <div class="welcome-card" id="cardWelcomePlay">
+          <div class="welcome-card-icon">🎮</div>
+          <div class="welcome-card-title">直接進入闖關</div>
+          <div class="welcome-card-desc">直接漫步金門聚落，尋找散步鄉親與可愛小動物互動</div>
+          <button class="welcome-card-btn alt" id="btnWelcomePlay">🎮 直接開始闖關</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 完整文本閱讀視窗 -->
+  <div class="modal-overlay" id="textReaderModal">
+    <div class="reader-modal-box">
+      <div class="reader-header">
+        <div class="reader-title">
+          <span>📖 本課完整文本研讀</span>
+        </div>
+        <button class="btn-dialogue-close" id="btnCloseReaderIcon" style="padding: 4px 12px; font-size: 0.85rem;">✖ 關閉</button>
+      </div>
+
+      <div class="reader-body">
+        
+        <!-- 第一部分：詩歌篇章 -->
+        <div class="reader-section">
+          <div class="reader-sec-title">
+            <span>📜 歌詩篇章：金門的聖誕老阿伯——羅寶田神父</span>
+          </div>
+          <div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">是啥物款的情份，</span>
+              <span class="reader-poem-tl">Sī siánn mih khuán --ê tsîng hūn ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">會佮金門結緣四十載。</span>
+              <span class="reader-poem-tl">Ē kah kim mn̂g kiat iân sì tsáp nî .</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">是啥物款的力量，</span>
+              <span class="reader-poem-tl">Sī siánn mih khuán --ê lik liōng ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">佇異鄉奉獻一生的青春。</span>
+              <span class="reader-poem-tl">Tī ī hiong hòng hiàn it sing --ê tshing tshun .</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">佇這個反亂不安的年代，</span>
+              <span class="reader-poem-tl">Tī tsit ê huán luān put an --ê nî tāi ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">伊帶來安定的力量；</span>
+              <span class="reader-poem-tl">I tuà lâi an tīng --ê lik liōng ;</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">佇戰亂艱苦的日子，</span>
+              <span class="reader-poem-tl">Tī tsiàn luān kan khóo --ê lit tsí ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">伊醫治阮的病疼；</span>
+              <span class="reader-poem-tl">I i tī guán --ê pinn thiànn ;</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">佇經濟起飛的日子，</span>
+              <span class="reader-poem-tl">Tī king tsè khí per --ê lit tsí ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">伊祈禱予咱希望；</span>
+              <span class="reader-poem-tl">I kî tó hōo lán hi bāng ;</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">天清月明，</span>
+              <span class="reader-poem-tl">Thinn tshing gèrh bîng ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">佇紀念公園內，</span>
+              <span class="reader-poem-tl">Tī kì liām kong hng lāi ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">花開的時陣，</span>
+              <span class="reader-poem-tl">Hue khui --ê sî tsūn ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">就有伊的笑聲。</span>
+              <span class="reader-poem-tl">Tióh ū i --ê tshiò siann .</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">風微微仔吹，</span>
+              <span class="reader-poem-tl">Huang bi bi á tsher ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">掀開一頁一頁的篇章，</span>
+              <span class="reader-poem-tl">Hian khui tsit iáh tsit iáh --ê phian tsiong ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">唚過嬌噹噹的花莓，</span>
+              <span class="reader-poem-tl">Tsim kèr suí tang tang --ê hue m̂ ,</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">拍醒叮叮咚咚的笑聲。</span>
+              <span class="reader-poem-tl">Phah tshínn ting ting tong tong --ê tshiò siann .</span>
+            </div>
+            <div class="reader-poem-line">
+              <span class="reader-poem-han">阮的心內，永遠留存伊的身影。</span>
+              <span class="reader-poem-tl">Guán ê sim lāi , íng uán liû tsûn i --ê sin iánn .</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第二部分：語詞教學 -->
+        <div class="reader-section">
+          <div class="reader-sec-title">
+            <span>📚 語詞教學 (8 大核心語詞)</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">結緣</span><span class="reader-vocab-tl">kiat iân</span></div>
+              <div style="font-size:0.9rem; color:#444;">建立緣分</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">奉獻</span><span class="reader-vocab-tl">hòng hiàn</span></div>
+              <div style="font-size:0.9rem; color:#444;">無私地付出或貢獻</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">青春</span><span class="reader-vocab-tl">tshing tshun</span></div>
+              <div style="font-size:0.9rem; color:#444;">青年時期、年輕歲月</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">年代</span><span class="reader-vocab-tl">nî tāi</span></div>
+              <div style="font-size:0.9rem; color:#444;">時代、時期</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">祈禱</span><span class="reader-vocab-tl">kî tó</span></div>
+              <div style="font-size:0.9rem; color:#444;">向神明或天主求福、禱告</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">公園</span><span class="reader-vocab-tl">kong hng</span></div>
+              <div style="font-size:0.9rem; color:#444;">供公眾休閒遊憩的場所</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">拍醒</span><span class="reader-vocab-tl">phah tshínn</span></div>
+              <div style="font-size:0.9rem; color:#444;">喚醒、叫醒</div>
+            </div>
+            <div class="reader-vocab-item">
+              <div class="reader-vocab-head"><span class="reader-vocab-term">笑聲</span><span class="reader-vocab-tl">tshiò siann</span></div>
+              <div style="font-size:0.9rem; color:#444;">歡笑的聲音</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第三部分：句型練習 -->
+        <div class="reader-section">
+          <div class="reader-sec-title">
+            <span>✍️ 句型練習 (3 大句型)</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color:var(--c-sea);">句型一：是啥物款的……，會……</strong>
+            <ul style="list-style:none; padding-left:10px; font-size:0.92rem; color:#444; margin-top:4px;">
+              <li>• 是啥物款的美食，會予你逐工思念？</li>
+              <li>• 是啥物款的風景，會予你心情輕鬆？</li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color:var(--c-sea);">句型二：佇……的日子，……</strong>
+            <ul style="list-style:none; padding-left:10px; font-size:0.92rem; color:#444; margin-top:4px;">
+              <li>• 佇花開的日子，阮做齊去公園散步。</li>
+              <li>• 佇落雨的日子，阮佇厝裡泡茶開講。</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="color:var(--c-sea);">句型三：……的時陣，就有……</strong>
+            <ul style="list-style:none; padding-left:10px; font-size:0.92rem; color:#444; margin-top:4px;">
+              <li>• 看見孫的時陣，就有阮的笑聲。</li>
+              <li>• 風微微仔吹的時陣，就有快樂的心情。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 第四部分：結語 -->
+        <div class="reader-section" style="background:#fff8e7; border-color:#f0cf98;">
+          <div class="reader-sec-title" style="color:#b84028;">
+            <span>💖 結語：用大愛溫暖生命 ｜ 用語言傳遞真情</span>
+          </div>
+          <p style="font-size:0.95rem; line-height:1.8; color:#444;">
+            💖 羅寶田神父用他一生的青春、醫療和大愛，深深奉獻在金門，成為大家口中那位溫暖的「聖誕老阿伯」。<br>
+            💖 我們也學會了用最溫馨、動聽的母語，來講生活的酸甜苦辣，分享彼此心中的感恩與歡笑。<br>
+            ✨ 祝願各位現場的每個人：身體健康，日日歡喜，快樂的年齡，越學越快樂！
+          </p>
+        </div>
+
+      </div>
+
+      <div class="reader-footer">
+        <button class="btn-dialogue-close" id="btnCloseReader">✖ 關閉閱讀</button>
+        <button class="welcome-card-btn alt" id="btnStartPlayFromReader" style="width: auto; padding: 8px 24px;">🎮 讀完文本，開始闖關！➔</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 遊戲引擎核心腳本 -->
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const canvas = $('rpgCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // 1. 七大歷史主線角色
+  const CHARACTERS = [
+    {
+      id: 0,
+      levelId: 1,
+      charCode: "CHAR-01",
+      charIcon: "⚓",
+      era: "1954",
+      charName: "老漁夫阿土",
+      role: "料羅灣漁夫",
+      zoneName: "料羅灣碼頭區 (左下)",
+      topic: "核心語詞：結緣 (kiat iân)",
+      homeX: 160, homeY: 380,
+      x: 160, y: 380,
+      strollRadius: 40,
+      color: "#2e7d32",
+      dialogue: "阿伯在碼頭邊散步，看著高大蓄長鬍鬚的法國神父：「阿伯啊！你打哪裡來？金門風沙遮大，你來這欲創啥？」",
+      taskQuestion: "詩中描述神父與金門的善緣：「是啥物款的情份，會佮金門______四十載？」空格應選？",
+      options: [
+        "結緣 (kiat iân) —— 建立美好善緣",
+        "結怨 (kiat uàn) —— 產生嫌隙怨恨",
+        "借過 (tsioh kuè) —— 請讓借路通過",
+        "買賣 (bué bē) —— 從事商品買賣"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】台羅拼音「kiat iân」，指相識的美好緣分。",
+        "【第二階·情境】神父是帶著慈悲大愛來金門，要在這裡與大家建立一輩子的情份。",
+        "【第三階·排除】排除負面或買賣選項，正確為「結緣」。"
+      ],
+      successText: "阿土伯高興地握著神父的手：「原來是來結緣的善心人！歡迎你來金門！」【CHAR-02 耕農阿發伯】已點亮！",
+      lockedText: "（阿土伯笑著招手）「神父您好！我就在料羅碼頭這邊吹海風呢！」",
+      completedText: "阿土伯笑著說：「神父，感謝你！你跟金門四十載的結緣，阮永遠放心內！」",
+      verse: "是啥物款的情份，會佮金門結緣四十載。 (Sī siánn mih khuán --ê tsîng hūn, ē kah kim mn̂g kiat iân sì tsáp nî.)",
+      vocabKey: "結緣"
+    },
+    {
+      id: 1,
+      levelId: 2,
+      charCode: "CHAR-02",
+      charIcon: "🌾",
+      era: "1955",
+      charName: "耕農阿發伯",
+      role: "山外耕農病患",
+      zoneName: "山外土舍區 (左上)",
+      topic: "核心語詞：奉獻、青春",
+      homeX: 170, homeY: 130,
+      x: 170, y: 130,
+      strollRadius: 45,
+      color: "#8d6e63",
+      dialogue: "阿發伯捂著發炎腫脹的手臂在土舍旁慢走，神父連忙上前拿出急救箱清洗包紮。阿發伯感動問：「神父，你離家萬里，把一生最好的年歲都給了金門，這是為啥？」",
+      taskQuestion: "詩中讚頌神父無私的大愛：「是啥物款的力量，佇異鄉______一生的______。」兩處應填入？",
+      options: [
+        "奉獻 (hòng hiàn) ／ 青春 (tshing tshun)",
+        "浪費 (lōng huì) ／ 錢銀 (tsînn gîn)",
+        "享受 (hiáng siū) ／ 榮華 (îng huâ)",
+        "買賣 (bué bē) ／ 時間 (sî kan)"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】動詞「hòng hiàn」(付出) 與名詞「tshing tshun」(年輕歲月)。",
+        "【第二階·情境】神父不求回報，將一生最寶貴的青春年華奉獻給貧苦鄉親。",
+        "【第三階·排除】正確選擇「奉獻」與「青春」。"
+      ],
+      successText: "神父微笑指著胸前十字架：「奉獻給需要的人，就是最歡喜的事。」【CHAR-03 避難阿玉嫂】已點亮！",
+      lockedText: "（阿發伯抱著手臂）「哎唷……傷口好痛……神父，請先去料羅碼頭找阿土伯結緣再來救我吧！」",
+      completedText: "阿發伯甩甩康復的手臂笑著說：「神父手藝真好！奉獻青春醫治我們，金門人真福氣！」",
+      verse: "是啥物款的力量，佇異鄉奉獻一生的青春。 (Sī siánn mih khuán --ê lik liōng, tī ī hiong hòng hiàn it sing --ê tshing tshun.)",
+      vocabKey: "奉獻"
+    },
+    {
+      id: 2,
+      levelId: 3,
+      charCode: "CHAR-03",
+      charIcon: "🕯️",
+      era: "1958",
+      charName: "避難阿玉嫂",
+      role: "抱著幼童的鄉親",
+      zoneName: "八二三防空洞區 (中上)",
+      topic: "核心語詞：年代、祈禱",
+      homeX: 430, homeY: 100,
+      x: 430, y: 100,
+      strollRadius: 40,
+      color: "#7e57c2",
+      dialogue: "阿玉嫂在坑道防空洞口焦急踱步，懷中嬰兒哭個不停，旁邊的傷兵痛苦呻吟。外頭砲火隆隆，神父輕撫著孩子的頭，在胸前劃十字架祈福……",
+      taskQuestion: "詩中形容神父陪伴島民度過艱困時期的兩句：「佇這個反亂不安的______，伊帶來安定的力量；佇戰亂艱苦的日子，伊______予咱希望。」",
+      options: [
+        "年代 (nî tāi) ／ 祈禱 (kî tó)",
+        "天氣 (thinn khì) ／ 講笑 (kóng tshiò)",
+        "節日 (tseh ji̍t) ／ 買菜 (bué tshài)",
+        "早起 (tsá khí) ／ 運動 (ūn tōng)"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】指歷史時期的「nî tāi」與求神賜福的「kî tó」。",
+        "【第二階·情境】在那個動盪不安的戰亂「年代」，神父以「祈禱」帶來無盡希望與安慰。",
+        "【第三階·排除】選出「年代」與「祈禱」。"
+      ],
+      successText: "神父溫柔的祈禱聲讓孩子安靜下來，大家的心都安定了！【CHAR-04 村童阿雄】已點亮！",
+      lockedText: "（阿玉嫂焦急望著遠方）「砲火聲好大……神父，請先去完成前面的任務再來防空洞！」",
+      completedText: "阿玉嫂抱著笑呵呵的孩子感激地說：「感謝神父在那個動亂年代的祈禱，保佑我們全家平安！」",
+      verse: "佇這個反亂不安的年代，伊帶來安定的力量；佇戰亂艱苦的日子，伊醫治阮的病疼；伊祈禱予咱希望；",
+      vocabKey: "祈禱"
+    },
+    {
+      id: 3,
+      levelId: 4,
+      charCode: "CHAR-04",
+      charIcon: "🏍️",
+      era: "1965",
+      charName: "村童阿雄",
+      role: "古寧頭學童",
+      zoneName: "木麻黃紅土路 (中央)",
+      topic: "核心語詞：拍醒 (phah tshínn)",
+      homeX: 480, homeY: 250,
+      x: 480, y: 250,
+      strollRadius: 55,
+      color: "#0288d1",
+      dialogue: "阿雄在紅土路旁跳著捉迷藏，聽到野馬摩托車聲興奮跑過來：「老阿伯！聖誕老阿伯！白鬍鬚飄飄真威風，後座有沒有帶來奶粉跟糖果？」",
+      taskQuestion: "詩中描寫微風與神父喚起希望的生動句子：「唚過嬌噹噹的花莓，______叮叮咚咚的笑聲。」空格動詞應選？",
+      options: [
+        "拍醒 (phah tshínn) —— 喚醒、叫醒",
+        "拍斷 (phah tn̄g) —— 折斷、中斷",
+        "拍開 (phah khui) —— 打開大門",
+        "拍弄 (phah lāng) —— 挑撥捉弄"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】台羅拼音「phah tshínn」，有喚醒沉睡生機之意。",
+        "【第二階·情境】神父騎著機車巡醫，喚醒了島嶼孩子們銀鈴般的笑聲。",
+        "【第三階·排除】選出代表喚醒希望的「拍醒」。"
+      ],
+      successText: "神父分送香甜的牛奶與餅乾，摸摸阿雄的頭，歡笑聲響徹村莊！【CHAR-05 阿秀嬤】已點亮！",
+      lockedText: "（阿雄蹦蹦跳跳）「聖誕老阿伯！你在前面還有病人要看喔，快去快去！」",
+      completedText: "阿雄咬著糖果哈哈大笑：「最喜歡神父的摩托車了！你拍醒了大家的歡笑聲！」",
+      verse: "風微微仔吹，掀開一頁一頁的篇章，唚過嬌噹噹的花莓，拍醒叮叮咚咚的笑聲。",
+      vocabKey: "拍醒"
+    },
+    {
+      id: 4,
+      levelId: 5,
+      charCode: "CHAR-05",
+      charIcon: "🍵",
+      era: "1978",
+      charName: "古厝阿秀嬤",
+      role: "瓊林長輩",
+      zoneName: "瓊林古厝茶埕 (中下)",
+      topic: "句型練習：是啥物款 / 佇……的日子",
+      homeX: 400, homeY: 410,
+      x: 400, y: 410,
+      strollRadius: 40,
+      color: "#e65100",
+      dialogue: "阿秀阿嬤在燕尾古厝茶桌前漫步散心，笑瞇瞇招手：「神父啊，坐啦！今仔日下雨天，咱鄉親作夥開講話家常。」",
+      taskQuestion: "若要練習【句型二：佇……的日子，……】，下列哪一句最符合古厝茶席溫馨的生活場景？",
+      options: [
+        "佇落雨的日子，阮佇厝裡泡茶開講。",
+        "佇落雨的日子，阮要去海邊游泳抓魚。",
+        "佇落雨的日子，手機仔逐工無電。",
+        "佇落雨的日子，阮佇高鐵站內跑步。"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·常識】「開講 (khai-káng)」是台語中聊天、話家常之意。",
+        "【第二階·情境】金門長輩在下雨農閒時，最喜愛聚在古厝廳下泡茶談天說笑。",
+        "【第三階·排除】選擇傳統鄉村生活的「泡茶開講」。"
+      ],
+      successText: "阿嬤開心地把新出爐的花生端到神父面前，大家說說笑笑！【CHAR-06 太湖阿明】已點亮！",
+      lockedText: "（阿秀阿嬤笑瞇瞇）「神父莫急，等您忙完前面的善事，阿嬤的茶永遠為您留著！」",
+      completedText: "阿秀阿嬤端著茶碗笑道：「佇落雨的日子泡茶開講，有神父作伴尚幸福！」",
+      verse: "【生活句型二】佇花開的日子，阮做齊去公園散步；佇落雨的日子，阮佇厝裡泡茶開講。",
+      vocabKey: "青春"
+    },
+    {
+      id: 5,
+      levelId: 6,
+      charCode: "CHAR-06",
+      charIcon: "⛪",
+      era: "1985",
+      charName: "太湖青阿明",
+      role: "昔日病童",
+      zoneName: "太湖聖母堂 (右上)",
+      topic: "核心語詞：笑聲 (tshiò siann) ＆ 句型三",
+      homeX: 740, homeY: 130,
+      x: 740, y: 130,
+      strollRadius: 50,
+      color: "#2e7d32",
+      dialogue: "阿明在美麗的白色聖母堂湖畔散步，望著神父親手築起的教堂：「神父，當年我高燒差點沒命，是您連夜救活了我。如今鐘聲響起，大家看見您都是滿臉歡笑！」",
+      taskQuestion: "詩中運用【句型三：……的時陣，就有……】描寫神父慈愛的笑顏，下列何者正確？",
+      options: [
+        "花開的時陣，就有伊的笑聲。",
+        "落大雨的時陣，就有雷公叫。",
+        "天烏烏的時陣，就有雨落來。",
+        "食飽飯的時陣，就有大肚腩。"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】核心語詞為「tshiò siann」(歡笑聲音)。",
+        "【第二階·情境】神父的博愛化作了整座島嶼的笑聲，每當繁花盛開之際，就想起他的笑容。",
+        "【第三階·排除】選出美好詩句「花開的時陣，就有伊的笑聲」。"
+      ],
+      successText: "太湖泛起金色波光，鐘聲響徹太湖！【CHAR-07 見證學子群】已點亮！",
+      lockedText: "（阿明正在擦拭聖堂石階）「神父！聖母堂快建好了，請先完成前面的心願再來敲鐘吧！」",
+      completedText: "阿明感動地說：「神父，太湖畔花開的時陣，永遠都有您爽朗慈祥的笑聲！」",
+      verse: "天清月明，佇紀念公園內，花開的時陣，就有伊的笑聲。",
+      vocabKey: "笑聲"
+    },
+    {
+      id: 6,
+      levelId: 7,
+      charCode: "CHAR-07",
+      charIcon: "🌸",
+      era: "現代",
+      charName: "見證學子群",
+      role: "歷史見證者",
+      zoneName: "羅寶田紀念花園 (右下)",
+      topic: "核心語詞：公園 (kong hng) ＆ 篇章終成",
+      homeX: 730, homeY: 390,
+      x: 730, y: 390,
+      strollRadius: 45,
+      color: "#d81b60",
+      dialogue: "學子們在盛開的紀念公園花徑漫步，在石碑前肅立追思：「羅神父將整整四十年的歲月奉獻給了這座島嶼。今天我們重溫這首詩篇，心中滿是感恩。」",
+      taskQuestion: "走進「公園 (kong hng)」，整首詩篇最終留在所有人深處的心聲是什麼？",
+      options: [
+        "阮的心內，永遠留存伊的身影。用大愛溫暖生命 ｜ 用語言傳遞真情！",
+        "金門風獅爺真威風，貢糖牛肉乾尚好吃。",
+        "歷史過去就過去了，大家趕緊回去滑手機。",
+        "紀念公園真漂亮，跑步鍛鍊身體好。"
+      ],
+      answer: 0,
+      hints: [
+        "【第一階·音標】「公園 (kong hng)」為眾人追思散步之綠地。",
+        "【第二階·情境】這是全篇的高潮總結，凝聚了大愛與母語傳承的終極精神。",
+        "【第三階·排除】選出最深情、最具生命教育意義的結語。"
+      ],
+      successText: "花瓣隨風飄落，神父的身影化作金門永恆的暖光！七大關卡全數功德圓滿！",
+      lockedText: "（學子們在花園捧著書本）「我們在等待全篇時光的最後篇章，神父，請先完成前面的歷程再來紀念花園！」",
+      completedText: "學子們齊聲念誦：「阮的心內，永遠留存伊的身影。用大愛溫暖生命，用語言傳遞真情！」",
+      verse: "阮的心內，永遠留存伊的身影。 💖 用大愛溫暖生命 ｜ 用語言傳遞真情！",
+      vocabKey: "公園"
+    }
+  ];
+
+  // 2. 八隻超萌小動物（語詞小助教與獎勵系統）
+  const ANIMALS = [
+    {
+      id: "hoopoe",
+      name: "小戴勝鳥 冠冠",
+      species: "戴勝鳥 (金門保育鳥類)",
+      icon: "🐦",
+      homeX: 200, homeY: 440,
+      x: 200, y: 440,
+      strollRadius: 35,
+      color: "#e67e22",
+      termKey: "結緣",
+      tl: "kiat iân",
+      question: "（小戴勝鳥撲稜著黑橘斑紋的美麗冠羽，歪著頭問）「神父神父！剛剛聽阿土伯講『結緣 (kiat iân)』，這個語詞到底是什麼意思呀？」",
+      options: [
+        "「結緣」是指人與人相遇，建立起美好、長遠的善意與緣分喔！",
+        "「結緣」是指在樹上築一個很大的鳥巢！",
+        "「結緣」是指把繩子打成死結解不開！"
+      ],
+      answer: 0,
+      rewardItem: "🥜 香酥金門花生",
+      rewardMsg: "多謝神父！這包剛炒好的香酥花生給您當點心！大愛能量 +15 ❤️！",
+      explainDone: "「結緣 (kiat iân)」：建立緣分。小戴勝鳥開心地抖了抖羽冠！"
+    },
+    {
+      id: "otter",
+      name: "歐亞水獺 水水",
+      species: "金門水獺 (水域小萌物)",
+      icon: "🦦",
+      homeX: 230, homeY: 100,
+      x: 230, y: 100,
+      strollRadius: 35,
+      color: "#795548",
+      termKey: "奉獻",
+      tl: "hòng hiàn",
+      question: "（小水獺抹了抹濕漉漉的小鬍鬚，眨巴著圓眼睛問）「神父神父！聽阿發伯說您在金門一生都在『奉獻 (hòng hiàn)』，這是什麼意思呀？」",
+      options: [
+        "「奉獻」是指全心全意、無私地付出所有心力與大愛，不求任何回報去幫助他人喔！",
+        "「奉獻」是指把抓到的魚全都藏在水底洞穴裡自己吃！",
+        "「奉獻」是指每天游三圈太湖睡午覺！"
+      ],
+      answer: 0,
+      rewardItem: "🍬 金門經典豬腳貢糖",
+      rewardMsg: "哇！奉獻好偉大！這顆甜甜的豬腳貢糖請神父吃，補充滿滿體力！大愛能量 +15 ❤️！",
+      explainDone: "「奉獻 (hòng hiàn)」：無私地付出或貢獻。小水獺歡喜地拍起了小肉掌！"
+    },
+    {
+      id: "squirrel",
+      name: "木麻黃小松鼠 栗栗",
+      species: "松鼠 (樹林小精靈)",
+      icon: "🐿️",
+      homeX: 340, homeY: 260,
+      x: 340, y: 260,
+      strollRadius: 40,
+      color: "#a0522d",
+      termKey: "青春",
+      tl: "tshing tshun",
+      question: "（小松鼠抱著蓬鬆的大尾巴跳到樹樁上，好奇地問）「神父神父！詩裡面說『奉獻一生的青春 (tshing tshun)』，『青春』是什麼滋味呀？」",
+      options: [
+        "「青春」是指人生中青年時期、最朝氣蓬勃、最美好寶貴的年輕歲月喔！",
+        "「青春」是指樹上還沒成熟的綠色酸澀橘子！",
+        "「青春」是指春天下大雨後長出來的青苔！"
+      ],
+      answer: 0,
+      rewardItem: "🌰 香甜松果酥",
+      rewardMsg: "原來青春是這麼珍貴的年華！送給神父這顆香甜的松果酥！大愛能量 +15 ❤️！",
+      explainDone: "「青春 (tshing tshun)」：青年時期、年輕歲月。小松鼠興奮地甩著大尾巴！"
+    },
+    {
+      id: "bat",
+      name: "坑道小蝙蝠 福寶",
+      species: "金門小蝙蝠 (坑道守護者)",
+      icon: "🦇",
+      homeX: 500, homeY: 60,
+      x: 500, y: 60,
+      strollRadius: 30,
+      color: "#37474f",
+      termKey: "年代",
+      tl: "nî tāi",
+      question: "（小蝙蝠倒掛在石壁前撲棱著小肉翅問）「神父神父！大人常說『那個反亂不安的年代 (nî tāi)』，『年代』是指什麼呀？」",
+      options: [
+        "「年代」是指歷史發展中的特定時期或整個時代歲月喔！",
+        "「年代」是指掛在牆壁上滴答響的圓形時鐘！",
+        "「年代」是指每天早上吹拂的金門海風！"
+      ],
+      answer: 0,
+      rewardItem: "🕯️ 溫暖防空長明燭",
+      rewardMsg: "在那個黑暗年代神父帶來光明！這支溫暖的長明燭火獻給神父！大愛能量 +15 ❤️！",
+      explainDone: "「年代 (nî tāi)」：時代、歷史特定時期。小蝙蝠開心地在空中轉了一圈！"
+    },
+    {
+      id: "dove",
+      name: "和平白鴿 安安",
+      species: "白鴿 (聖堂和平使者)",
+      icon: "🕊️",
+      homeX: 680, homeY: 100,
+      x: 680, y: 100,
+      strollRadius: 35,
+      color: "#eceff1",
+      termKey: "祈禱",
+      tl: "kî tó",
+      question: "（純白的小鴿子啄著嫩草，溫順地抬起頭問）「神父神父！您常常閉上眼睛胸前劃十字，這叫作『祈禱 (kî tó)』對不對？它是什麼意思呢？」",
+      options: [
+        "「祈禱」是指向天主或神明虔誠求福、為身邊的人與土地祈求平安、希望與力量喔！",
+        "「祈禱」是指對著天空大聲呼喊叫人起床！",
+        "「祈禱」是指在草地上數天上有多少朵白雲！"
+      ],
+      answer: 0,
+      rewardItem: "🍞 剛出爐的愛心麵包",
+      rewardMsg: "神父的祈禱讓大家都充滿平安希望！這塊剛烤好的熱麵包請神父充飢！大愛能量 +15 ❤️！",
+      explainDone: "「祈禱 (kî tó)」：向神明或天主求福、禱告。白鴿輕輕拍著翅膀落於神父肩頭！"
+    },
+    {
+      id: "crab",
+      name: "泥灘招潮蟹 鉗鉗",
+      species: "弧邊招潮蟹 (海灘萌客)",
+      icon: "🦀",
+      homeX: 110, homeY: 440,
+      x: 110, y: 440,
+      strollRadius: 30,
+      color: "#e53935",
+      termKey: "拍醒",
+      tl: "phah tshínn",
+      question: "（小招潮蟹揮舞著一把紅色大螯，喀嚓喀嚓好奇地問）「神父神父！詩裡面寫『拍醒 (phah tshínn) 叮叮咚咚的笑聲』，『拍醒』是什麼意思呀？」",
+      options: [
+        "「拍醒」是指喚醒、叫醒，這裡生動地形容神父的車聲喚回了大地沈睡的活力與笑聲喔！",
+        "「拍醒」是指用鉗子把鬧鐘用力拍成碎片！",
+        "「拍醒」是指在海水裡打水花捉迷藏！"
+      ],
+      answer: 0,
+      rewardItem: "🥛 香醇溫熱美援牛奶",
+      rewardMsg: "神父拍醒了所有人的笑臉！這杯香醇甜熱的牛奶請老阿伯暖身！大愛能量 +15 ❤️！",
+      explainDone: "「拍醒 (phah tshínn)」：喚醒、叫醒。招潮蟹快樂地雙螯齊舞！"
+    },
+    {
+      id: "duck",
+      name: "太湖小花鴨 呱呱",
+      species: "太湖野鴨 (湖畔悠哉客)",
+      icon: "🦆",
+      homeX: 680, homeY: 180,
+      x: 680, y: 180,
+      strollRadius: 40,
+      color: "#43a047",
+      termKey: "笑聲",
+      tl: "tshiò siann",
+      question: "（小鴨子搖擺著圓屁股在太湖邊呱呱叫）「神父神父！大家都說花開的時陣就有老阿伯的『笑聲 (tshiò siann)』，『笑聲』為什麼讓人心裡好溫暖呢？」",
+      options: [
+        "「笑聲」是發自內心歡暢愉快的聲音，代表著恐懼散去、充滿愛、希望與幸福的溫暖情懷喔！",
+        "「笑聲」是指打雷轟隆隆很響亮的聲音！",
+        "「笑聲」是指肚子餓時咕嚕咕嚕叫的聲音！"
+      ],
+      answer: 0,
+      rewardItem: "🍯 太湖野生純花蜜",
+      rewardMsg: "神父的笑聲比花蜜還甜！這罐金黃香甜的太湖蜂蜜獻給神父！大愛能量 +15 ❤️！",
+      explainDone: "「笑聲 (tshiò siann)」：歡笑的聲音。小花鴨在湖水中歡快地拍起水花！"
+    },
+    {
+      id: "fawn",
+      name: "花園小梅花鹿 點點",
+      species: "金門梅花鹿 (花園靈獸)",
+      icon: "🦌",
+      homeX: 780, homeY: 340,
+      x: 780, y: 340,
+      strollRadius: 35,
+      color: "#d87d4a",
+      termKey: "公園",
+      tl: "kong hng",
+      question: "（小梅花鹿抖了抖梅花斑點的身子，溫柔地靠過來問）「神父神父！現在大家都在『公園 (kong hng)』裡追思您，『公園』是什麼地方呀？」",
+      options: [
+        "「公園」是供公眾休閒遊憩、散步散心，也是後人緬懷大愛傳奇的綠地場所喔！",
+        "「公園」是指專門用來停戰車放砲彈的軍事基地！",
+        "「公園」是指蓋在山頂上沒有人能走到的石城堡！"
+      ],
+      answer: 0,
+      rewardItem: "🌸 金門四季追思花環",
+      rewardMsg: "因為有神父，公園永遠芬芳！這頂新鮮編織的花環戴在老阿伯頭上！大愛能量 +15 ❤️！",
+      explainDone: "「公園 (kong hng)」：供公眾休閒遊憩、追思之場所。小梅花鹿溫柔地蹭了蹭神父的手心！"
+    }
+  ];
+
+  // 3. 核心詞彙資料
+  const VOCAB_DATA = [
+    { term: "結緣", tl: "kiat iân", def: "建立緣分、結識善緣。", sample: "會佮金門結緣四十載。" },
+    { term: "奉獻", tl: "hòng hiàn", def: "無私地付出全部精力與愛心。", sample: "佇異鄉奉獻一生的青春。" },
+    { term: "青春", tl: "tshing tshun", def: "青年時期、寶貴的年輕歲月。", sample: "奉獻一生的青春。" },
+    { term: "年代", tl: "nî tāi", def: "時代、歷史特定時期。", sample: "佇這個反亂不安的年代。" },
+    { term: "祈禱", tl: "kî tó", def: "向神明或天主求福、禱告平安。", sample: "伊祈禱予咱希望。" },
+    { term: "拍醒", tl: "phah tshínn", def: "喚醒、叫醒。", sample: "拍醒叮叮咚咚的笑聲。" },
+    { term: "笑聲", tl: "tshiò siann", def: "歡笑的聲音、樂觀安樂的情懷。", sample: "就有伊的笑聲。" },
+    { term: "公園", tl: "kong hng", def: "供公眾休閒遊憩、追思紀念的綠地場所。", sample: "佇紀念公園內，花開的時陣。" }
+  ];
+
+  // 4. 句型資料
+  const PATTERN_DATA = [
+    {
+      name: "句型一：是啥物款的……，會……",
+      samples: [
+        "是啥物款的情份，會佮金門結緣四十載？",
+        "是啥物款的力量，佇異鄉奉獻一生的青春？",
+        "是啥物款的美食，會予你逐工思念？",
+        "是啥物款的風景，會予你心情輕鬆？"
+      ]
+    },
+    {
+      name: "句型二：佇……的日子，……",
+      samples: [
+        "佇戰亂艱苦的日子，伊醫治阮的病疼。",
+        "佇經濟起飛的日子，伊祈禱予咱希望。",
+        "佇花開的日子，阮做齊去公園散步。",
+        "佇落雨的日子，阮佇厝裡泡茶開講。"
+      ]
+    },
+    {
+      name: "句型三：……的時陣，就有……",
+      samples: [
+        "花開的時陣，就有伊的笑聲。",
+        "看見孫的時陣，就有阮的笑聲。",
+        "風微微仔吹的時陣，就有快樂的心情。"
+      ]
+    }
+  ];
+
+  // 5. 遊戲狀態儲存
+  const STORE_KEY = "druetto_animal_vocab_rpg_v5";
+  const defaultState = () => ({
+    currentStageIdx: 0,
+    unlockedMax: 0,
+    completed: [],
+    unlockedVocabs: [],
+    unlockedVerses: [],
+    justUnlockedIdx: null,
+    love: 100,
+    collectedRewards: [], // 收集到的小動物點心
+    taughtAnimals: []     // 已成功解說過的小動物 ID
+  });
+
+  let state = loadState();
+  function loadState() {
+    try {
+      const s = localStorage.getItem(STORE_KEY);
+      return s ? { ...defaultState(), ...JSON.parse(s) } : defaultState();
+    } catch { return defaultState(); }
+  }
+  function saveState() {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    renderStageHub();
+    renderAnimalPouch();
+    renderArchive();
+  }
+
+  // 6. 玩家主角實體
+  const player = {
+    x: 440, y: 250,
+    speed: 3.5,
+    facing: "right",
+    walkFrame: 0,
+    targetX: null,
+    targetY: null
+  };
+
+  const keys = { up: false, down: false, left: false, right: false };
+
+  // 7. 角色與小動物自主漫步 AI
+  function updateEntitiesStroll(list) {
+    list.forEach(ent => {
+      if (!ent.vx) {
+        ent.vx = (Math.random() - 0.5) * 0.7;
+        ent.vy = (Math.random() - 0.5) * 0.7;
+        ent.strollTimer = 60 + Math.floor(Math.random() * 80);
+        ent.isIdle = false;
+        ent.walkFrame = 0;
+        ent.facing = ent.vx > 0 ? "right" : "left";
+      }
+
+      ent.strollTimer--;
+      if (ent.strollTimer <= 0) {
+        if (Math.random() < 0.35) {
+          ent.isIdle = true;
+          ent.strollTimer = 40 + Math.floor(Math.random() * 60);
+        } else {
+          ent.isIdle = false;
+          ent.vx = (Math.random() - 0.5) * 0.8;
+          ent.vy = (Math.random() - 0.5) * 0.8;
+          ent.facing = ent.vx > 0 ? "right" : "left";
+          ent.strollTimer = 70 + Math.floor(Math.random() * 90);
+        }
+      }
+
+      if (!ent.isIdle) {
+        const distFromHome = Math.hypot(ent.x + ent.vx - ent.homeX, ent.y + ent.vy - ent.homeY);
+        if (distFromHome > ent.strollRadius) {
+          ent.vx = (ent.homeX - ent.x) * 0.02;
+          ent.vy = (ent.homeY - ent.y) * 0.02;
+          ent.facing = ent.vx > 0 ? "right" : "left";
+        }
+        ent.x += ent.vx;
+        ent.y += ent.vy;
+        ent.walkFrame++;
+      }
+    });
+  }
+
+  // 8. 玩家更新與靠近檢測
+  let nearEntity = null; // 可以是人物或小動物
+  let nearType = null;   // 'character' | 'animal'
+
+  function updatePlayer() {
+    if (activeDialogue) return;
+
+    let dx = 0, dy = 0;
+    if (keys.up) dy -= 1;
+    if (keys.down) dy += 1;
+    if (keys.left) dx -= 1;
+    if (keys.right) dx += 1;
+
+    if (player.targetX !== null && player.targetY !== null) {
+      const dist = Math.hypot(player.targetX - player.x, player.targetY - player.y);
+      if (dist > 6) {
+        dx = (player.targetX - player.x) / dist;
+        dy = (player.targetY - player.y) / dist;
+      } else {
+        player.targetX = null; player.targetY = null;
+      }
+    }
+
+    if (dx !== 0 || dy !== 0) {
+      const len = Math.hypot(dx, dy);
+      const stepX = (dx / len) * player.speed;
+      const stepY = (dy / len) * player.speed;
+
+      const nx = player.x + stepX;
+      const ny = player.y + stepY;
+
+      if (nx > 30 && nx < 850) player.x = nx;
+      if (ny > 40 && ny < 470) player.y = ny;
+
+      if (dx > 0) player.facing = "right";
+      else if (dx < 0) player.facing = "left";
+
+      player.walkFrame++;
+    }
+
+    checkNearEntity();
+  }
+
+  function checkNearEntity() {
+    nearEntity = null;
+    nearType = null;
+    let minDist = 60;
+
+    // 先檢查人物
+    for (const c of CHARACTERS) {
+      const dist = Math.hypot(player.x - c.x, player.y - c.y);
+      if (dist < minDist) {
+        minDist = dist;
+        nearEntity = c;
+        nearType = 'character';
+      }
+    }
+
+    // 再檢查小動物
+    for (const a of ANIMALS) {
+      const dist = Math.hypot(player.x - a.x, player.y - a.y);
+      if (dist < minDist) {
+        minDist = dist;
+        nearEntity = a;
+        nearType = 'animal';
+      }
+    }
+  }
+
+  // 9. 背景地貌繪製
+  function drawWorldBackground() {
+    ctx.clearRect(0, 0, 880, 500);
+
+    ctx.fillStyle = "#8cb369";
+    ctx.fillRect(0, 0, 880, 500);
+
+    // 1. 左下料羅灣碼頭
+    ctx.fillStyle = "#1e607d";
+    ctx.fillRect(0, 310, 260, 190);
+    ctx.strokeStyle = "rgba(255,255,255,0.25)";
+    ctx.lineWidth = 2;
+    const waveT = Date.now() * 0.003;
+    for (let y = 330; y < 500; y += 35) {
+      ctx.beginPath();
+      ctx.arc(80 + Math.sin(waveT + y) * 12, y, 40, 0.2, Math.PI - 0.2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "#d3c3b0";
+    ctx.fillRect(100, 330, 150, 130);
+    ctx.fillStyle = "#a6805b";
+    ctx.fillRect(180, 340, 35, 30);
+
+    // 2. 左上山外土舍
+    ctx.fillStyle = "#c97b53";
+    ctx.fillRect(40, 40, 220, 160);
+    ctx.fillStyle = "#a83220";
+    ctx.fillRect(70, 60, 80, 65);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(98, 80, 24, 6);
+    ctx.fillRect(107, 71, 6, 24);
+
+    // 3. 中上八二三防空洞
+    ctx.fillStyle = "#4a4e69";
+    ctx.fillRect(350, 20, 180, 130);
+    ctx.fillStyle = "#22223b";
+    ctx.beginPath();
+    ctx.arc(440, 110, 40, Math.PI, 0);
+    ctx.fill();
+    ctx.fillRect(400, 110, 80, 35);
+
+    // 4. 中央木麻黃紅土路
+    ctx.fillStyle = "#d48259";
+    ctx.fillRect(250, 220, 380, 70);
+    ctx.fillStyle = "#2d5a27";
+    for (let x = 280; x < 620; x += 65) {
+      ctx.beginPath(); ctx.arc(x, 210, 15, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(x, 300, 15, 0, Math.PI*2); ctx.fill();
+    }
+
+    // 5. 中下瓊林古厝茶埕
+    ctx.fillStyle = "#c56d56";
+    ctx.fillRect(320, 340, 190, 140);
+    ctx.fillStyle = "#a83220";
+    ctx.fillRect(350, 350, 130, 60);
+    ctx.fillStyle = "#e0e1dd";
+    ctx.beginPath(); ctx.arc(400, 440, 14, 0, Math.PI*2); ctx.fill();
+
+    // 6. 右上太湖與白色聖母堂
+    ctx.fillStyle = "#3a8891";
+    ctx.fillRect(660, 20, 220, 180);
+    ctx.fillStyle = "#f8f9fa";
+    ctx.fillRect(690, 50, 100, 80);
+    ctx.fillStyle = "#b84028";
+    ctx.fillRect(737, 30, 6, 20);
+    ctx.fillRect(730, 36, 20, 6);
+
+    // 7. 右下紀念花園
+    ctx.fillStyle = "#7ca970";
+    ctx.fillRect(640, 280, 240, 220);
+    ctx.fillStyle = "#ded6c9";
+    ctx.beginPath(); ctx.ellipse(750, 400, 70, 55, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#8d99ae";
+    ctx.fillRect(725, 340, 50, 36);
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 10px sans-serif";
+    ctx.fillText("紀念碑", 735, 362);
+    ctx.fillStyle = "#e91e63";
+    for (let i = 670; i < 840; i += 32) {
+      ctx.beginPath(); ctx.arc(i, 460, 8, 0, Math.PI*2); ctx.fill();
+    }
+
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillText("⚓ 料羅碼頭", 110, 480);
+    ctx.fillText("🌾 山外土舍", 80, 50);
+    ctx.fillText("🕯️ 八二三防空洞", 390, 40);
+    ctx.fillText("🏍️ 木麻黃公路", 380, 260);
+    ctx.fillText("🍵 瓊林古厝", 385, 345);
+    ctx.fillText("⛪ 太湖聖母堂", 705, 45);
+    ctx.fillText("🌸 紀念公園", 725, 335);
+  }
+
+  // 10. 繪製人類角色
+  function drawCharacters() {
+    CHARACTERS.forEach(npc => {
+      const isTarget = npc.id === state.currentStageIdx;
+      const isDone = state.completed.includes(npc.id);
+
+      ctx.save();
+      ctx.translate(npc.x, npc.y);
+
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.beginPath(); ctx.ellipse(0, 14, 12, 5, 0, 0, Math.PI * 2); ctx.fill();
+
+      const bounce = npc.isIdle ? 0 : Math.sin(npc.walkFrame * 0.25) * 2;
+      const legStep = npc.isIdle ? 0 : Math.sin(npc.walkFrame * 0.2) * 5;
+
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(-3, 6); ctx.lineTo(-3 + legStep, 14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(3, 6); ctx.lineTo(3 - legStep, 14); ctx.stroke();
+
+      ctx.fillStyle = npc.color;
+      ctx.beginPath(); ctx.arc(0, 0 + bounce, 12, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = "#ffdbac";
+      ctx.beginPath(); ctx.arc(0, -12 + bounce, 8, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = "#bcaaa4";
+      ctx.beginPath();
+      ctx.moveTo(-14, -15 + bounce); ctx.lineTo(14, -15 + bounce); ctx.lineTo(0, -25 + bounce);
+      ctx.closePath(); ctx.fill();
+
+      let tagBg = "#4a5568";
+      let tagBorder = "#cbd5e1";
+      if (isTarget) {
+        tagBg = "#b84028";
+        tagBorder = "#ffd54f";
+      } else if (isDone) {
+        tagBg = "#2e7d32";
+        tagBorder = "#a5d6a7";
+      }
+
+      const labelText = `${npc.charCode} ${npc.charName}`;
+      ctx.font = "bold 11px sans-serif";
+      const txtW = ctx.measureText(labelText).width;
+
+      ctx.fillStyle = tagBg;
+      ctx.strokeStyle = tagBorder;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(-txtW / 2 - 8, -44 + bounce, txtW + 16, 18, 9);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.fillText(labelText, 0, -31 + bounce);
+
+      if (isTarget) {
+        const arrowBounce = Math.sin(Date.now() * 0.008) * 5;
+        ctx.fillStyle = "#ffd54f";
+        ctx.beginPath();
+        ctx.moveTo(0, -52 + arrowBounce);
+        ctx.lineTo(-8, -64 + arrowBounce);
+        ctx.lineTo(8, -64 + arrowBounce);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.font = "bold 10px sans-serif";
+        ctx.fillStyle = "#b84028";
+        ctx.fillText("🎯 任務！", 0, -68 + arrowBounce);
+      } else if (isDone) {
+        ctx.font = "bold 11px sans-serif";
+        ctx.fillStyle = "#2e7d32";
+        ctx.fillText("✓", 0, -48 + bounce);
+      } else {
+        ctx.font = "10px sans-serif";
+        ctx.fillStyle = "#666";
+        ctx.fillText("🔒", 0, -48 + bounce);
+      }
+
+      ctx.restore();
+    });
+  }
+
+  // 11. 繪製可愛小動物（帶名稱與提問氣泡）
+  function drawAnimals() {
+    ANIMALS.forEach(ani => {
+      const isTaught = state.taughtAnimals.includes(ani.id);
+      ctx.save();
+      ctx.translate(ani.x, ani.y);
+
+      // 影子
+      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.beginPath(); ctx.ellipse(0, 10, 10, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+      const hop = Math.sin(ani.walkFrame * 0.3) * 3;
+      const isLeft = ani.facing === "left";
+      ctx.scale(isLeft ? -1 : 1, 1);
+
+      // 根據物種繪製特色可愛造型
+      ctx.fillStyle = ani.color;
+      if (ani.id === "hoopoe") {
+        // 戴勝鳥：圓橘色身軀 + 扇狀斑紋冠羽
+        ctx.beginPath(); ctx.arc(0, -2 + hop, 9, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#e67e22";
+        ctx.beginPath(); // 冠羽
+        ctx.moveTo(0, -11 + hop); ctx.lineTo(-8, -22 + hop); ctx.lineTo(4, -14 + hop); ctx.fill();
+        ctx.fillStyle = "#222"; ctx.fillRect(-7, -22 + hop, 5, 2); // 冠羽黑頂
+        ctx.fillStyle = "#f39c12"; ctx.fillRect(6, -4 + hop, 6, 3); // 長嘴
+      } else if (ani.id === "otter") {
+        // 水獺：圓長身子 + 小圓耳 + 擺動尾巴
+        ctx.beginPath(); ctx.ellipse(0, 0 + hop, 11, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(8, -4 + hop, 6, 0, Math.PI*2); ctx.fill(); // 頭
+        ctx.beginPath(); ctx.arc(11, -8 + hop, 2.5, 0, Math.PI*2); ctx.fill(); // 耳
+        ctx.fillStyle = "#5d4037"; // 尾巴
+        ctx.beginPath(); ctx.ellipse(-12, 2 + hop, 7, 3, -0.3, 0, Math.PI*2); ctx.fill();
+      } else if (ani.id === "squirrel") {
+        // 松鼠：大蓬鬆尾巴
+        ctx.beginPath(); ctx.arc(0, 0 + hop, 8, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#d35400"; // 蓬鬆尾
+        ctx.beginPath(); ctx.arc(-9, -8 + hop, 9, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(5, -6 + hop, 5, 0, Math.PI*2); ctx.fill(); // 頭
+      } else if (ani.id === "bat") {
+        // 蝙蝠：黑小翼
+        ctx.beginPath(); ctx.arc(0, 0 + hop, 6, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#2c3e50";
+        ctx.beginPath(); ctx.moveTo(-12, -4 + hop); ctx.lineTo(-4, 0 + hop); ctx.lineTo(-12, 6 + hop); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(12, -4 + hop); ctx.lineTo(4, 0 + hop); ctx.lineTo(12, 6 + hop); ctx.fill();
+      } else if (ani.id === "dove") {
+        // 白鴿：潔白撲翅
+        ctx.beginPath(); ctx.ellipse(0, 0 + hop, 9, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#ffd54f"; ctx.fillRect(7, -3 + hop, 4, 3); // 喙
+        ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-2, -6 + hop, 6, 0, Math.PI*2); ctx.fill();
+      } else if (ani.id === "crab") {
+        // 招潮蟹：大紅螯
+        ctx.beginPath(); ctx.arc(0, 0 + hop, 7, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#c0392b";
+        ctx.beginPath(); ctx.arc(9, -7 + hop, 6, 0, Math.PI*2); ctx.fill(); // 大紅鉗
+      } else if (ani.id === "duck") {
+        // 花鴨：扁黃嘴
+        ctx.beginPath(); ctx.ellipse(0, 0 + hop, 9, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#f39c12"; ctx.fillRect(6, -2 + hop, 7, 4); // 扁嘴
+      } else {
+        // 小鹿：鹿角小耳梅花斑
+        ctx.beginPath(); ctx.ellipse(0, 0 + hop, 10, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(7, -6 + hop, 5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#fff"; ctx.fillRect(-2, -2 + hop, 2, 2); ctx.fillRect(2, 1 + hop, 2, 2); // 斑點
+      }
+
+      ctx.scale(isLeft ? -1 : 1, 1); // 轉回正向畫名牌
+
+      // 小動物名牌
+      const aniTag = `${ani.icon} ${ani.name}`;
+      ctx.font = "bold 10px sans-serif";
+      const aW = ctx.measureText(aniTag).width;
+
+      ctx.fillStyle = isTaught ? "#fff9c4" : "#ffffff";
+      ctx.strokeStyle = isTaught ? "#fbc02d" : "#ffd54f";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(-aW/2 - 6, -34 + hop, aW + 12, 16, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = isTaught ? "#f57f17" : "#b26a00";
+      ctx.textAlign = "center";
+      ctx.fillText(aniTag, 0, -22 + hop);
+
+      // 頭頂狀態（已學會打勾 / 未學會顯示問號）
+      const qBounce = Math.sin(Date.now() * 0.007) * 3;
+      if (isTaught) {
+        ctx.font = "bold 10px sans-serif";
+        ctx.fillStyle = "#2e7d32";
+        ctx.fillText("🐾 已學會", 0, -38 + hop + qBounce);
+      } else {
+        ctx.font = "bold 11px sans-serif";
+        ctx.fillStyle = "#e65100";
+        ctx.fillText("❓ 請教我", 0, -38 + hop + qBounce);
+      }
+
+      ctx.restore();
+    });
+  }
+
+  // 12. 繪製神父
+  function drawPlayer() {
+    ctx.save();
+    ctx.translate(player.x, player.y);
+
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.beginPath(); ctx.ellipse(0, 18, 16, 7, 0, 0, Math.PI * 2); ctx.fill();
+
+    const isLeft = player.facing === "left";
+    const dir = isLeft ? -1 : 1;
+    const bounce = Math.sin(player.walkFrame * 0.3) * 2;
+    ctx.scale(dir, 1);
+
+    const leg1 = Math.sin(player.walkFrame * 0.25) * 6;
+    ctx.strokeStyle = "#263238";
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(-4, 6); ctx.lineTo(-4 + leg1, 16); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4, 6); ctx.lineTo(4 - leg1, 16); ctx.stroke();
+
+    ctx.fillStyle = "#2c3e50";
+    ctx.beginPath(); ctx.arc(0, 0 + bounce, 14, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = "#ffd54f";
+    ctx.fillRect(-1, -4 + bounce, 2, 8);
+    ctx.fillRect(-4, -2 + bounce, 8, 2);
+
+    ctx.fillStyle = "#d32f2f";
+    ctx.fillRect(10, 2 + bounce, 12, 9);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(14, 5 + bounce, 4, 3);
+
+    ctx.fillStyle = "#ffdbac";
+    ctx.beginPath(); ctx.arc(0, -14 + bounce, 9, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.moveTo(-6, -10 + bounce); ctx.lineTo(6, -10 + bounce); ctx.lineTo(0, -1 + bounce);
+    ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle = "#1a252f";
+    ctx.beginPath(); ctx.ellipse(0, -20 + bounce, 11, 5, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.scale(dir, 1);
+    ctx.fillStyle = "#2c3e50";
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("羅寶田神父", 0, -28 + bounce);
+
+    ctx.restore();
+  }
+
+  // 13. 靠近時的交談提示泡泡
+  function drawInteractBubble(ent, type) {
+    const t = Math.sin(Date.now() * 0.008) * 4;
+    ctx.save();
+    ctx.translate(ent.x, ent.y - (type === 'animal' ? 52 : 70) + t);
+
+    ctx.fillStyle = type === 'animal' ? "#e65100" : "#b84028";
+    ctx.beginPath();
+    ctx.roundRect(-65, -14, 130, 24, 12);
+    ctx.fill();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(type === 'animal' ? "🐾 點擊或空白鍵" : "💬 點擊或空白鍵", 0, 2);
+
+    ctx.restore();
+  }
+
+  // 14. 核心對話系統（整合人物關卡任務 ＆ 小動物語詞請教）
+  let activeDialogue = null;
+  let activeType = null; // 'character' | 'animal'
+  let hintLevel = 0;
+
+  function openDialogue(ent, type) {
+    activeDialogue = ent;
+    activeType = type;
+    hintLevel = 0;
+
+    const optsBox = $('dialogueOptions');
+    optsBox.innerHTML = "";
+    $('dialogueHintText').textContent = "";
+
+    if (type === 'animal') {
+      // 小動物請教語詞！
+      const isTaught = state.taughtAnimals.includes(ent.id);
+      $('dialogueSpeaker').textContent = `🐾 ${ent.name} (${ent.species})`;
+      $('dialogueTopicTag').textContent = `請教語詞：${ent.termKey} (${ent.tl})`;
+
+      if (isTaught) {
+        $('dialogueBody').innerHTML = `
+          <p style="color:#2e7d32; font-weight:bold; margin-bottom:6px;">${ent.explainDone}</p>
+          <div style="background:#fffde7; padding:8px 12px; border-radius:6px; border:1px solid #ffe082;">
+            💖 小動物已經完全學會了！牠開心地抱著送給神父的【${ent.rewardItem}】向您揮手！
+          </div>
+        `;
+        $('btnHint').style.display = "none";
+        $('btnCloseDialogue').style.display = "inline-block";
+        $('btnCloseDialogue').textContent = "好的，小動物真乖 ➔";
+      } else {
+        $('dialogueBody').innerHTML = `
+          <p style="margin-bottom:8px; font-size:1rem; color:#4a2800;">${ent.question}</p>
+          <div style="background:#fff8e7; padding:6px 10px; border-radius:6px; border-left:3px solid #ffb300; font-weight:bold; font-size:0.88rem;">
+            💡 羅神父，請您向小動物耐心解釋【${ent.termKey}】的正確意思：
+          </div>
+        `;
+        $('btnHint').style.display = "none";
+        $('btnCloseDialogue').style.display = "none";
+
+        ent.options.forEach((optText, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = "dialogue-opt-btn";
+          const keyLetter = String.fromCharCode(65 + oIdx);
+          btn.innerHTML = `<span class="opt-key">${keyLetter}</span> <span>${optText}</span>`;
+          btn.addEventListener('click', () => chooseAnimalAnswer(oIdx, btn));
+          optsBox.appendChild(btn);
+        });
+      }
+    } else {
+      // 人物關卡任務
+      const npc = ent;
+      const isTarget = npc.id === state.currentStageIdx;
+      const isDone = state.completed.includes(npc.id);
+
+      $('dialogueSpeaker').textContent = `💬 [${npc.charCode}] ${npc.charName} (${npc.role})`;
+      $('dialogueTopicTag').textContent = npc.topic;
+
+      if (isTarget) {
+        $('dialogueBody').innerHTML = `
+          <p style="margin-bottom:6px;">${npc.dialogue}</p>
+          <div style="background:#fff8e7; padding:8px 12px; border-radius:6px; border-left:3px solid var(--c-gold); font-weight:600;">
+            ${npc.taskQuestion}
+          </div>
+        `;
+        $('btnHint').style.display = "inline-block";
+        $('btnHint').disabled = false;
+        $('btnHint').textContent = "💡 時光錦囊提示 (第 1 階)";
+        $('btnCloseDialogue').style.display = "none";
+
+        npc.options.forEach((optText, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = "dialogue-opt-btn";
+          const keyLetter = String.fromCharCode(65 + oIdx);
+          btn.innerHTML = `<span class="opt-key">${keyLetter}</span> <span>${optText}</span>`;
+          btn.addEventListener('click', () => chooseCharacterAnswer(oIdx, btn));
+          optsBox.appendChild(btn);
+        });
+      } else if (isDone) {
+        $('dialogueBody').innerHTML = `
+          <p style="color:#2e7d32; font-weight:bold; margin-bottom:6px;">${npc.completedText}</p>
+          <div style="background:#f1f8e9; padding:8px 12px; border-radius:6px;">
+            <strong>已解鎖詩篇：</strong>${npc.verse}
+          </div>
+        `;
+        $('btnHint').style.display = "none";
+        $('btnCloseDialogue').style.display = "inline-block";
+        $('btnCloseDialogue').textContent = "好的，重溫完畢 ➔";
+      } else {
+        const needNpc = CHARACTERS[state.currentStageIdx];
+        $('dialogueBody').innerHTML = `
+          <p style="color:#666; margin-bottom:6px;">${npc.lockedText}</p>
+          <div style="background:#f5f5f5; padding:8px 12px; border-radius:6px; color:var(--c-brick); font-weight:600;">
+            🔒 此任務尚未解鎖！請先前往【${needNpc.zoneName}】尋找【${needNpc.charCode} ${needNpc.charName}】對話解鎖！
+          </div>
+        `;
+        $('btnHint').style.display = "none";
+        $('btnCloseDialogue').style.display = "inline-block";
+        $('btnCloseDialogue').textContent = "好的，我先去找當前目標 ➔";
+      }
+    }
+
+    $('dialogueModal').style.display = "block";
+  }
+
+  function closeDialogue() {
+    activeDialogue = null;
+    activeType = null;
+    $('dialogueModal').style.display = "none";
+  }
+
+  // 處理小動物語詞解釋答題
+  function chooseAnimalAnswer(idx, btn) {
+    if (!activeDialogue || activeType !== 'animal') return;
+    const ani = activeDialogue;
+    const allBtns = document.querySelectorAll('.dialogue-opt-btn');
+
+    if (idx === ani.answer) {
+      btn.classList.add('correct');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (!state.taughtAnimals.includes(ani.id)) {
+        state.taughtAnimals.push(ani.id);
+        state.collectedRewards.push({ name: ani.rewardItem, from: ani.name });
+        state.love = Math.min(100, state.love + 15);
+        if (!state.unlockedVocabs.includes(ani.termKey)) {
+          state.unlockedVocabs.push(ani.termKey);
+        }
+      }
+
+      $('loveBadge').textContent = `大愛值 ${state.love} ❤️`;
+      $('dialogueHintText').style.color = "#2e7d32";
+      $('dialogueHintText').innerHTML = `🎉 答對了！${ani.rewardMsg}`;
+      $('btnCloseDialogue').style.display = "inline-block";
+      $('btnCloseDialogue').textContent = "收下小點心，繼續漫步 ➔";
+
+      saveState();
+    } else {
+      btn.classList.add('wrong');
+      btn.disabled = true;
+      $('dialogueHintText').style.color = "#c62828";
+      $('dialogueHintText').textContent = "（小動物歪著頭眨眨眼）這個解釋好像怪怪的耶，神父能再說一次嗎？";
+    }
+  }
+
+  // 處理人類關卡答題
+  function chooseCharacterAnswer(idx, btn) {
+    if (!activeDialogue || activeType !== 'character') return;
+    const npc = activeDialogue;
+    const allBtns = document.querySelectorAll('.dialogue-opt-btn');
+
+    if (idx === npc.answer) {
+      btn.classList.add('correct');
+      allBtns.forEach(b => b.disabled = true);
+      $('btnHint').disabled = true;
+
+      const isNewClear = !state.completed.includes(npc.id);
+      if (isNewClear) {
+        state.completed.push(npc.id);
+        state.unlockedVerses.push(npc.verse);
+        if (npc.vocabKey && !state.unlockedVocabs.includes(npc.vocabKey)) {
+          state.unlockedVocabs.push(npc.vocabKey);
+        }
+      }
+
+      if (npc.id + 1 < CHARACTERS.length) {
+        const nextIdx = npc.id + 1;
+        state.currentStageIdx = nextIdx;
+        if (state.unlockedMax < nextIdx) {
+          state.unlockedMax = nextIdx;
+          state.justUnlockedIdx = nextIdx;
+        }
+        const nextNpc = CHARACTERS[nextIdx];
+        $('hubHint').textContent = `✨ 恭喜！下一關角色【${nextNpc.charCode} ${nextNpc.charName}】已點亮！快去${nextNpc.zoneName}找他吧！`;
+        $('missionBanner').textContent = `🎯 任務：前往【${nextNpc.zoneName}】，尋找正在散步的 [${nextNpc.charCode} ${nextNpc.charName}] 對話！`;
+        $('statBadge').textContent = `當前目標：${nextNpc.charCode} ${nextNpc.charName}`;
+      } else {
+        $('hubHint').textContent = `🎉 恭喜！七大角色全部點亮功德圓滿！`;
+        $('statBadge').textContent = `🏆 全角色點亮完成！`;
+      }
+
+      $('dialogueHintText').style.color = "#2e7d32";
+      $('dialogueHintText').textContent = "🎉 答對了！" + npc.successText;
+      $('btnCloseDialogue').style.display = "inline-block";
+      $('btnCloseDialogue').textContent = "太好了，去找下一位 ➔";
+
+      saveState();
+
+      if (state.completed.length === CHARACTERS.length) {
+        setTimeout(() => { $('endModal').style.display = "flex"; }, 900);
+      }
+    } else {
+      btn.classList.add('wrong');
+      btn.disabled = true;
+      $('dialogueHintText').style.color = "#c62828";
+      $('dialogueHintText').textContent = "此選項語意不妥，請查看左下角「時光錦囊提示」再試！";
+    }
+  }
+
+  function giveHint() {
+    if (!activeDialogue || activeType !== 'character' || hintLevel >= 3) return;
+    const curHint = activeDialogue.hints[hintLevel];
+    $('dialogueHintText').style.color = "#b26a00";
+    $('dialogueHintText').textContent = curHint;
+
+    if (hintLevel === 2) {
+      const allBtns = document.querySelectorAll('.dialogue-opt-btn');
+      allBtns.forEach((b, i) => {
+        if (i !== activeDialogue.answer && i !== (activeDialogue.answer + 1) % 4) {
+          b.disabled = true;
+          b.style.opacity = "0.35";
+        }
+      });
+    }
+
+    hintLevel++;
+    $('btnHint').textContent = hintLevel >= 3 ? "錦囊已盡數開啟" : `💡 時光錦囊提示 (第 ${hintLevel + 1} 階)`;
+    if (hintLevel >= 3) $('btnHint').disabled = true;
+  }
+
+  // 15. 渲染小動物獎勵行囊橫條
+  function renderAnimalPouch() {
+    const box = $('pouchItems');
+    if (!state.collectedRewards || state.collectedRewards.length === 0) {
+      box.innerHTML = `<span style="font-size:0.78rem; color:#888;">尚未收到小動物點心，快去地圖上找小水獺、戴勝鳥跟小鹿解說語詞吧！</span>`;
+      return;
+    }
+    box.innerHTML = "";
+    state.collectedRewards.forEach(r => {
+      const span = document.createElement('span');
+      span.className = "pouch-item-pill";
+      span.innerHTML = `${r.name} <small style="opacity:0.75;">(${r.from})</small>`;
+      box.appendChild(span);
+    });
+  }
+
+  // 16. 渲染頂部關卡角色卡牌看板
+  function renderStageHub() {
+    const grid = $('charStageGrid');
+    grid.innerHTML = "";
+
+    CHARACTERS.forEach((npc, idx) => {
+      const isTarget = idx === state.currentStageIdx;
+      const isDone = state.completed.includes(idx);
+      const isUnlocked = idx <= state.unlockedMax;
+      const isJustUnlocked = state.justUnlockedIdx === idx;
+
+      const card = document.createElement('div');
+      let statusClass = "locked";
+      let statusLabel = "🔒 鎖定 (暗)";
+
+      if (isDone) {
+        statusClass = "completed";
+        statusLabel = "✅ 已通關 (亮)";
+      } else if (isTarget) {
+        statusClass = "active";
+        statusLabel = "🎯 散步中 (尋找)";
+      } else if (isUnlocked) {
+        statusClass = "active";
+        statusLabel = "✨ 已點亮解鎖";
+      }
+
+      card.className = `char-stage-card ${statusClass} ${isTarget ? 'active' : ''} ${isJustUnlocked ? 'just-unlocked' : ''}`;
+      card.innerHTML = `
+        <span class="char-code-badge">${npc.charCode}</span>
+        <div class="char-avatar-circle">${npc.charIcon}</div>
+        <span class="char-name-label">${npc.charName}</span>
+        <span style="font-size:0.65rem; color:#888;">${npc.era}年</span>
+        <span class="char-status-text">${statusLabel}</span>
+      `;
+
+      card.addEventListener('click', () => {
+        player.targetX = npc.x;
+        player.targetY = npc.y;
+        state.justUnlockedIdx = null;
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  // 17. 渲染底部典藏區
+  function renderArchive() {
+    const pContainer = $('poemContainer');
+    pContainer.innerHTML = "";
+    CHARACTERS.forEach((npc, idx) => {
+      const isDone = state.completed.includes(idx);
+      const row = document.createElement('div');
+      row.className = `poem-row ${isDone ? '' : 'locked'}`;
+      row.innerHTML = `
+        <span style="font-weight:600;">${isDone ? npc.verse.split('(')[0] : '【漫步金門與角色對話解鎖篇章……】'}</span>
+        <span style="font-size:0.82rem; color:#777;">[${npc.charCode}] · ${npc.charName}</span>
+      `;
+      pContainer.appendChild(row);
+    });
+
+    const vContainer = $('vocabContainer');
+    vContainer.innerHTML = "";
+    VOCAB_DATA.forEach(v => {
+      const isUnlocked = state.unlockedVocabs.includes(v.term) || state.completed.length === CHARACTERS.length;
+      const isLearnedByAnimal = ANIMALS.some(a => a.termKey === v.term && state.taughtAnimals.includes(a.id));
+      const card = document.createElement('div');
+      card.className = `vocab-card ${isLearnedByAnimal ? 'learned' : ''}`;
+      card.style.opacity = isUnlocked ? "1" : "0.5";
+      card.innerHTML = `
+        <div class="vocab-head">
+          <span class="vocab-term">${v.term}</span>
+          <span class="vocab-tl">${v.tl}</span>
+        </div>
+        <p style="font-size:0.88rem; margin-bottom:4px;">${v.def}</p>
+        <p style="font-size:0.8rem; color:#666;">例句：${v.sample}</p>
+        ${isLearnedByAnimal ? '<span style="font-size:0.75rem; color:#f57f17; font-weight:bold;">🐾 已向小動物詳細解說</span>' : ''}
+      `;
+      vContainer.appendChild(card);
+    });
+
+    const patContainer = $('patternsContainer');
+    patContainer.innerHTML = "";
+    PATTERN_DATA.forEach(p => {
+      const card = document.createElement('div');
+      card.className = "pattern-card";
+      const lis = p.samples.map(s => `<li style="margin:3px 0;">• ${s}</li>`).join("");
+      card.innerHTML = `
+        <div style="font-weight:bold; color:var(--c-sea); margin-bottom:4px; font-size:0.92rem;">${p.name}</div>
+        <ul style="list-style:none; padding-left:4px; font-size:0.88rem;">${lis}</ul>
+      `;
+      patContainer.appendChild(card);
+    });
+  }
+
+  // 18. 典藏頁籤切換
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      $(btn.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+
+  // 19. 操作事件綁定
+  window.addEventListener('keydown', e => {
+    if (activeDialogue) {
+      if (e.key === "Escape") closeDialogue();
+      return;
+    }
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") keys.up = true;
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") keys.down = true;
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = true;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = true;
+
+    if (e.key === " " || e.key === "Enter") {
+      if (nearEntity) openDialogue(nearEntity, nearType);
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") keys.up = false;
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") keys.down = false;
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = false;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = false;
+  });
+
+  canvas.addEventListener('pointerdown', e => {
+    if (activeDialogue) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clickX = (e.clientX - rect.left) * scaleX;
+    const clickY = (e.clientY - rect.top) * scaleY;
+
+    if (nearEntity) {
+      const dist = Math.hypot(clickX - nearEntity.x, clickY - nearEntity.y);
+      if (dist < 48) {
+        openDialogue(nearEntity, nearType);
+        return;
+      }
+    }
+
+    player.targetX = clickX;
+    player.targetY = clickY;
+  });
+
+  const bindDPad = (btnId, key) => {
+    const el = $(btnId);
+    const setKey = val => { keys[key] = val; player.targetX = null; };
+    el.addEventListener('pointerdown', e => { e.preventDefault(); setKey(true); });
+    el.addEventListener('pointerup', e => { e.preventDefault(); setKey(false); });
+    el.addEventListener('pointerleave', () => setKey(false));
+  };
+  bindDPad('dUp', 'up');
+  bindDPad('dDown', 'down');
+  bindDPad('dLeft', 'left');
+  bindDPad('dRight', 'right');
+
+  $('btnInteract').addEventListener('click', () => {
+    if (nearEntity) openDialogue(nearEntity, nearType);
+  });
+
+  $('btnHint').addEventListener('click', giveHint);
+
+  $('btnCloseDialogue').addEventListener('click', () => {
+    closeDialogue();
+  });
+
+  $('btnReset').addEventListener('click', () => {
+    if (confirm("確定要重設冒險進度嗎？所有解鎖將重新開始。")) {
+      state = defaultState();
+      localStorage.removeItem(STORE_KEY);
+      player.x = 440; player.y = 250;
+      const firstNpc = CHARACTERS[0];
+      $('missionBanner').textContent = `🎯 任務：前往【${firstNpc.zoneName}】，尋找正在散步的 [${firstNpc.charCode} ${firstNpc.charName}] 對話！`;
+      $('statBadge').textContent = `當前目標：${firstNpc.charCode} ${firstNpc.charName}`;
+      $('loveBadge').textContent = `大愛值 100 ❤️`;
+      saveState();
+    }
+  });
+
+  $('btnCloseModal').addEventListener('click', () => {
+    $('endModal').style.display = "none";
+  });
+
+  // 文本閱讀視窗與開局引導控制
+  function openTextReader() {
+    $('welcomeModal').style.display = 'none';
+    $('textReaderModal').style.display = 'flex';
+  }
+  function closeTextReader() {
+    $('textReaderModal').style.display = 'none';
+  }
+  function startGameDirect() {
+    $('welcomeModal').style.display = 'none';
+    $('textReaderModal').style.display = 'none';
+  }
+
+  $('btnOpenReaderTop').addEventListener('click', openTextReader);
+  $('btnWelcomeRead').addEventListener('click', (e) => { e.stopPropagation(); openTextReader(); });
+  $('cardWelcomeRead').addEventListener('click', openTextReader);
+  $('btnWelcomePlay').addEventListener('click', (e) => { e.stopPropagation(); startGameDirect(); });
+  $('cardWelcomePlay').addEventListener('click', startGameDirect);
+  $('btnCloseReader').addEventListener('click', closeTextReader);
+  $('btnCloseReaderIcon').addEventListener('click', closeTextReader);
+  $('btnStartPlayFromReader').addEventListener('click', startGameDirect);
+
+  // 20. 主遊戲迴圈 (60 FPS)
+  function gameLoop() {
+    updateEntitiesStroll(CHARACTERS);
+    updateEntitiesStroll(ANIMALS);
+    updatePlayer();
+
+    drawWorldBackground();
+    drawAnimals();
+    drawCharacters();
+    drawPlayer();
+
+    if (nearEntity && !activeDialogue) {
+      drawInteractBubble(nearEntity, nearType);
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  // 初始同步
+  const curTarget = CHARACTERS[state.currentStageIdx];
+  if (curTarget) {
+    $('missionBanner').textContent = `🎯 任務：前往【${curTarget.zoneName}】，尋找正在散步的 [${curTarget.charCode} ${curTarget.charName}] 對話！`;
+    $('statBadge').textContent = `當前目標：${curTarget.charCode} ${curTarget.charName}`;
+  }
+  $('loveBadge').textContent = `大愛值 ${state.love} ❤️`;
+
+  renderStageHub();
+  renderAnimalPouch();
+  renderArchive();
+  requestAnimationFrame(gameLoop);
+
+})();
+</script>
+
+</body>
+</html>
